@@ -1,0 +1,76 @@
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+<div class="bg-body-secondary min-vh-100 m-1">
+  <div *ngIf="!errorMessage && allJobs.length > 0">
+    <h1 class="px-4 py-3">Job Listings</h1>
+
+    <!-- Dropdown menu for location filtering -->
+    <div class="mx-3">
+      <label for="locationSelect" class="px-1 fw-bold"
+        >Filter by Location:</label
+      >
+      <select
+        id="locationSelect"
+        [(ngModel)]="selectedLocation"
+        (change)="filterJobsByLocation()"
+      >
+        <option value="">All Locations</option>
+        <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+      </select>
+    </div>
+
+    <!-- Job Listings -->
+    <div *ngIf="jobs.length > 0; else noJobs">
+      <div
+        *ngFor="let job of jobs"
+        class="card border-2 m-3 p-3 bg-primary-subtle"
+      >
+        <h3>{{ job._feed_entry?.title }}</h3>
+        <p><strong>Company:</strong> {{ job._feed_entry?.businessName }}</p>
+        <p><strong>Location:</strong> {{ job._feed_entry?.municipal }}</p>
+        <a
+          [routerLink]="['/job', job.id]"
+          [state]="{ title: job._feed_entry?.title }"
+          class="btn btn-primary"
+        >
+          View Job</a
+        >
+      </div>
+    </div>
+    <ng-template #noJobs>
+      <p>No jobs found.</p>
+    </ng-template>
+
+    <!-- Pagination Controls -->
+    <div
+      class="pagination-controls p-2 d-flex align-content-center justify-content-center gap-2"
+    >
+      <button
+        (click)="goToPage(currentPage - 1)"
+        [hidden]="currentPage === 1"
+        class="bg-primary text-light border-0 px-2 rounded"
+      >
+        Previous
+      </button>
+      <span class="p-2">Page {{ currentPage }} of {{ totalPages }}</span>
+      <button
+        (click)="goToPage(currentPage + 1)"
+        [hidden]="currentPage === totalPages"
+        class="bg-primary text-light border-0 px-2 rounded"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+  <!-- Floating Scroll Back to Top Button -->
+  <button
+    *ngIf="showScrollTop"
+    class="scroll-top"
+    (click)="scrollToTop()"
+    title="Go to top"
+  >
+    &UpArrow;
+  </button>
+</div>

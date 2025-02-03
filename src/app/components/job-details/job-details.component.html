@@ -1,0 +1,32 @@
+<div class="bg-body-secondary min-vh-100">
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="jobDetails" class="card border-2 m-2 p-3 bg-primary-subtle">
+    <h1>{{ jobDetails.title }}</h1>
+    <p>
+      <strong>Employer:</strong>
+      {{ jobDetails.employerName || "Not available" }}
+    </p>
+    <p>
+      <strong>Job Description:</strong>
+      {{ jobDetails.description || "Not available" }}
+    </p>
+    <p>
+      <strong>Published:</strong> {{ jobDetails.published || "Not available" }}
+    </p>
+    <p>
+      <strong>Apply Here:</strong>
+      <a *ngIf="jobDetails.applicationUrl" [href]="jobDetails.applicationUrl">
+        Job Application </a
+      >&nbsp;
+      <span *ngIf="!jobDetails.applicationUrl"
+        >No application link available</span
+      >
+    </p>
+  </div>
+  <div>
+    <a [routerLink]="['/']" class="mx-3">Back to Job Listings</a>
+  </div>
+</div>
